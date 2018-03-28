@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "442482924828",
+    "firebase_url": "https://paddybookstore.firebaseio.com",
+    "project_id": "paddybookstore",
+    "storage_bucket": "paddybookstore.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:442482924828:android:dbb82af84795b661",
+        "android_client_info": {
+          "package_name": "com.example.cianm.bookstore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "442482924828-63da89f1ml1i3k4f6b2dkjuug99ua2s8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cianm.bookstore",
+            "certificate_hash": "7686816b37a2520fc729fb6fe1eb179d720e7fad"
+          }
+        },
+        {
+          "client_id": "442482924828-egko7mrmtkgn2l27fg5a3b367iqomvmg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAI6-pzWlmPiKRpBFgDCLptsG8aXS6YYBU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "442482924828-egko7mrmtkgn2l27fg5a3b367iqomvmg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
