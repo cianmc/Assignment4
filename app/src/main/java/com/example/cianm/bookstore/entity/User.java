@@ -9,12 +9,15 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class User {
 
-    String name, email, password, shippingAddress, paymentDetails;
+    String name, email, password, shippingAddress, paymentDetails, noOfPurchases;
 
-    public User(String name, String email, String password) {
+    public User(){}
+
+    public User(String name, String email, String password, String noOfPurchases) {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.noOfPurchases = noOfPurchases;
     }
 
     public User(String name, String email, String password, String shippingAddress, String paymentDetails) {
@@ -63,5 +66,13 @@ public class User {
 
     public void setPaymentDetails(String paymentDetails) {
         this.paymentDetails = paymentDetails;
+    }
+
+    public String getNoOfPurchases() {
+        return noOfPurchases;
+    }
+
+    public void setNoOfPurchases(String noOfPurchases) {
+        this.noOfPurchases = noOfPurchases;
     }
 }

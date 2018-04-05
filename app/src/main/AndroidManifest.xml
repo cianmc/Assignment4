@@ -3,6 +3,7 @@
     package="com.example.cianm.bookstore">
 
     <application
+        android:name=".entity.GlobalVariables"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -18,7 +19,12 @@
         </activity>
         <activity android:name=".activity.AdminHome" />
         <activity android:name=".activity.CustomerHome" />
-        <activity android:name=".activity.MainActivity"></activity>
+        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.AddBook" />
+        <activity android:name=".activity.SearchBook" />
+        <activity
+            android:name=".activity.ViewBook"
+            android:windowSoftInputMode="stateHidden|adjustNothing"/>
     </application>
 
 </manifest>

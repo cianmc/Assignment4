@@ -12,7 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class CustomerHome extends AppCompatActivity {
 
-    Button mSignOut;
+    Button mSignOut, mSearchButton;
     FirebaseAuth mAuth;
 
     @Override
@@ -22,8 +22,17 @@ public class CustomerHome extends AppCompatActivity {
         setTitle("Customer Home");
 
         mSignOut = (Button) findViewById(R.id.signOut);
+        mSearchButton = (Button) findViewById(R.id.searchBookBtn);
+
 
         mAuth = FirebaseAuth.getInstance();
+
+        mSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(CustomerHome.this, SearchBook.class));
+            }
+        });
 
         mSignOut.setOnClickListener(new View.OnClickListener() {
             @Override

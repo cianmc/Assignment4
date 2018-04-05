@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private FirebaseAuth mAuth;
-    private  FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference mFirebaseDatabase;
 
     private EditText mEmail, mPassword, mName;
@@ -49,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "onAuthStateChanged:signed_in" + fbUser.getUid());
                     mFirebaseDatabase = FirebaseDatabase.getInstance().getReference("User");
                     mFirebaseDatabase.child(fbUser.getUid()).setValue(user);
-                    Toast.makeText(getApplicationContext(), "Sucessfully signed in with: " + fbUser.getEmail(), Toast.LENGTH_SHORT).show();
-                    if (user.getName().equalsIgnoreCase("Admin")) {
+                    Toast.makeText(getApplicationContext(), "Successfully signed in with: " + fbUser.getEmail(), Toast.LENGTH_SHORT).show();
+                    if (user.getEmail().equalsIgnoreCase("admin@gmail.com")) {
                         startActivity(new Intent(MainActivity.this, AdminHome.class));
                     } else {
                         startActivity(new Intent(MainActivity.this, CustomerHome.class));
@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 String email = mEmail.getText().toString();
                 String password = mPassword.getText().toString();
                 String name = mName.getText().toString();
+                String noOfPurchases = "0";
                 if (email.equals("")) {
                     Toast.makeText(MainActivity.this, "Please enter in a email address", Toast.LENGTH_SHORT).show();
                 } else if (password.equals("")) {
@@ -77,11 +78,10 @@ public class MainActivity extends AppCompatActivity {
                 } else if (password.length() < 6) {
                     Toast.makeText(MainActivity.this, "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
                 } else {
-
+                    mAuth.createUserWithEmailAndPassword(email, password);
+                    user = new User(name, email, password, noOfPurchases);
+                    mRegister.setVisibility(View.INVISIBLE);
                 }
-                mAuth.createUserWithEmailAndPassword(email, password);
-                user = new User(name, email, password);
-                mRegister.setVisibility(View.INVISIBLE);
             }
         });
     }

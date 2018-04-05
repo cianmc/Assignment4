@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">BookStore</string>
 
+    <string-array name="bookCategory">
+        <item>Horror</item>
+        <item>Fiction</item>
+        <item>Non-fiction</item>
+        <item>History</item>
+        <item>Biography</item>
+        <item>Education</item>
+    </string-array>
+
 </resources>
