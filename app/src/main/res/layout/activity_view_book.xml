@@ -7,7 +7,7 @@
     tools:context="com.example.cianm.bookstore.activity.ViewBook">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageViewBook"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="620dp"
@@ -198,6 +198,7 @@
         android:numStars="5"
         android:stepSize="1.0"
         android:rating="0.0"
+        android:progressTint="@color/duskYellow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/avgRatingBar" />
 
@@ -299,10 +300,10 @@
         style="@style/Widget.AppCompat.RatingBar.Indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="79dp"
+        android:layout_marginStart="76dp"
         android:theme="@style/RatingBar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewBook" />
 
     <TextView
         android:id="@+id/noComments"

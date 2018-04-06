@@ -1,6 +1,7 @@
 package com.example.cianm.bookstore.activity;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.cianm.bookstore.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -29,7 +31,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     ArrayList<String> quantityList;
     ArrayList<String> bookImageList;
 
-    public SearchAdapter(Context context, ArrayList<String> idList, ArrayList<String> titleList, ArrayList<String> authorList, ArrayList<String> categoryList, ArrayList<String> priceList, ArrayList<String> quantityList, RecyclerViewClickListener itemListener) {
+    public SearchAdapter(Context context, ArrayList<String> idList, ArrayList<String> titleList, ArrayList<String> authorList, ArrayList<String> categoryList, ArrayList<String> priceList, ArrayList<String> quantityList, ArrayList<String> bookImageList, RecyclerViewClickListener itemListener) {
         this.context = context;
         this.itemListener = itemListener;
         this.idList = idList;
@@ -38,18 +40,19 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         this.categoryList = categoryList;
         this.priceList = priceList;
         this.quantityList = quantityList;
+        this.bookImageList = bookImageList;
     }
 
     public static class SearchViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        //ImageView bookImage;
+        ImageView bookImage;
         TextView mTitle, mAuthor, mCategory, mPrice;
 
 
         public SearchViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            //bookImage = (ImageView) itemView.findViewById(R.id.bookImage);
+            bookImage = (ImageView) itemView.findViewById(R.id.bookImage);
             mTitle = (TextView) itemView.findViewById(R.id.titleSearchItem);
             mAuthor = (TextView) itemView.findViewById(R.id.authorSearchItem);
             mPrice = (TextView) itemView.findViewById(R.id.priceSearchItem);
@@ -73,10 +76,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     public void onBindViewHolder(SearchViewHolder holder, int position) {
         holder.mTitle.setText(titleList.get(position));
         holder.mAuthor.setText(authorList.get(position));
-        holder.mPrice.setText("€" + priceList.get(position));
+        holder.mPrice.setText("€ " + priceList.get(position));
         holder.mCategory.setText(categoryList.get(position));
 
-        //Glide.with(context).load(bookImageList.get(position)).asBitmap().placeholder(R.mipmap.ic_launcher_round).into(holder.bookImage);
+        Picasso.with(context).load(bookImageList.get(position)).fit().placeholder(R.mipmap.ic_launcher_round).into(holder.bookImage);
     }
 
     @Override

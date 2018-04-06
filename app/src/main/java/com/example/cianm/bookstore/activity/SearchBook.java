@@ -36,7 +36,7 @@ public class SearchBook extends AppCompatActivity{
     ArrayList<String> categoryList;
     ArrayList<String> priceList;
     ArrayList<String> quantityList;
-    //ArrayList <String> bookImageList;
+    ArrayList <String> bookImageList;
 
     SearchAdapter searchAdapter;
     private static RecyclerViewClickListener itemListener;
@@ -62,7 +62,7 @@ public class SearchBook extends AppCompatActivity{
         categoryList = new ArrayList<>();
         priceList = new ArrayList<>();
         quantityList = new ArrayList<>();
-        //bookImageList = new ArrayList<>();
+        bookImageList = new ArrayList<>();
 
         mSearchEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -86,6 +86,7 @@ public class SearchBook extends AppCompatActivity{
                     categoryList.clear();
                     priceList.clear();
                     quantityList.clear();
+                    bookImageList.clear();
                     recyclerView.removeAllViews();
                 }
             }
@@ -104,6 +105,7 @@ public class SearchBook extends AppCompatActivity{
                 categoryList.clear();
                 priceList.clear();
                 quantityList.clear();
+                bookImageList.clear();
                 recyclerView.removeAllViews();
 
                 int counter = 0;
@@ -116,7 +118,7 @@ public class SearchBook extends AppCompatActivity{
                     String category = ds.child("category").getValue(String.class);
                     String price = ds.child("price").getValue(String.class);
                     String quantity = ds.child("quantity").getValue(String.class);
-                    //String image = ds.child("image").getValue(String.class);
+                    String image = ds.child("image").getValue(String.class);
 
                     if (title.toLowerCase().contains(searchedString.toLowerCase())){
                         idList.add(id);
@@ -125,7 +127,7 @@ public class SearchBook extends AppCompatActivity{
                         categoryList.add(category);
                         priceList.add(price);
                         quantityList.add(quantity);
-                        //bookImageList.add(image);
+                        bookImageList.add(image);
                         counter++;
                     } else if (author.toLowerCase().contains(searchedString.toLowerCase())) {
                         idList.add(id);
@@ -134,7 +136,7 @@ public class SearchBook extends AppCompatActivity{
                         categoryList.add(category);
                         priceList.add(price);
                         quantityList.add(quantity);
-                        //bookImageList.add(image);
+                        bookImageList.add(image);
                         counter++;
                     } else if (category.toLowerCase().contains(searchedString.toLowerCase())){
                         idList.add(id);
@@ -143,14 +145,14 @@ public class SearchBook extends AppCompatActivity{
                         categoryList.add(category);
                         priceList.add(price);
                         quantityList.add(quantity);
-                        //bookImageList.add(image);
+                        bookImageList.add(image);
                         counter++;
                     }
                     if(counter == 15){
                         break;
                     }
 
-                    searchAdapter = new SearchAdapter(SearchBook.this, idList, titleList, authorList, categoryList, priceList, quantityList, new RecyclerViewClickListener() {
+                    searchAdapter = new SearchAdapter(SearchBook.this, idList, titleList, authorList, categoryList, priceList, quantityList, bookImageList, new RecyclerViewClickListener() {
                         @Override
                         public void recyclerViewLisClicked(View v, int position) {
                             ((GlobalVariables) SearchBook.this.getApplication()).setCurrentBook(idList.get(position).toString());

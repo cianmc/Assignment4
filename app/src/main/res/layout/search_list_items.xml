@@ -6,15 +6,13 @@
     android:orientation="horizontal"
     android:padding="10dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:id="@+id/bookImage"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:padding="2dp"
-        android:visibility="invisible"
-        android:src="@mipmap/ic_launcher_round"
-        app:civ_border_color="@color/colorPrimaryDark"
-        app:civ_border_width="1dp" />
+        android:visibility="visible"
+        android:src="@mipmap/ic_launcher_round" />
 
     <LinearLayout
         android:layout_width="match_parent"

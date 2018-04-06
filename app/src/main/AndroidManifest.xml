@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.cianm.bookstore">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:name=".entity.GlobalVariables"
         android:allowBackup="true"
@@ -24,7 +27,8 @@
         <activity android:name=".activity.SearchBook" />
         <activity
             android:name=".activity.ViewBook"
-            android:windowSoftInputMode="stateHidden|adjustNothing"/>
+            android:windowSoftInputMode="stateHidden|adjustNothing" />
+        <activity android:name=".activity.ViewCart"></activity>
     </application>
 
 </manifest>

@@ -47,7 +47,7 @@ public class CommentAdapter extends SimpleAdapter {
 
         userTV.setText(data2.get(position).get("username"));
         commentTV.setText(data2.get(position).get("comment"));
-        ratingTV.setText(data2.get(position).get("rating"));
+        ratingTV.setText(data2.get(position).get("rating") + " Stars");
 
         return view;
     }

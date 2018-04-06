@@ -1,5 +1,6 @@
 package com.example.cianm.bookstore.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
@@ -27,6 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -40,6 +43,7 @@ public class ViewBook extends AppCompatActivity {
     DatabaseReference mBookRef, mCartRef, mUserRef, mCommentRef;
     FirebaseAuth mAuth;
     FirebaseUser fbUser;
+    Context context;
 
     TextView mTitle, mAuthor, mCategory, mPrice, mQuantity, quantityTV, noComments;
     EditText eTitle, eAuthor, ePrice, eQuantity, mComment;
@@ -47,7 +51,8 @@ public class ViewBook extends AppCompatActivity {
     RatingBar rating, displayRating;
     Spinner spinner;
     ListView mCommentLV;
-    String bookID, userName, title;
+    ImageView mImageView;
+    String bookID, userName, title, image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +85,8 @@ public class ViewBook extends AppCompatActivity {
         bAddToCart = (Button) findViewById(R.id.addToCartBtn);
         bPostReview = (Button) findViewById(R.id.postReviewBtn);
 
-        //ProgressBar & Spinner & ListView
+        //ProgressBar & Spinner & ListView & ImageView
+        mImageView = (ImageView) findViewById(R.id.imageViewBook);
         rating = (RatingBar) findViewById(R.id.ratingBar);
         spinner = (Spinner) findViewById(R.id.spinner);
         mCommentLV = (ListView) findViewById(R.id.commentsListView);
@@ -227,13 +233,14 @@ public class ViewBook extends AppCompatActivity {
         String price = mPrice.getText().toString();
         String quantity = "1";
 
-        Book book = new Book(bookID, title, author, category, price, quantity);
+        Book book = new Book(bookID, title, author, category, price, quantity, image);
         mCartRef.child(fbUser.getUid()).child(cartID).setValue(book);
         Toast.makeText(getApplicationContext(), "Added " + book.getTitle() + " to cart", Toast.LENGTH_LONG).show();
         if (userName.equalsIgnoreCase("Admin")) {
             startActivity(new Intent(ViewBook.this, AdminHome.class));
+        } else {
+            startActivity(new Intent(ViewBook.this, CustomerHome.class));
         }
-        startActivity(new Intent(ViewBook.this, CustomerHome.class));
     }
 
     public void saveBookDetails(){
@@ -277,11 +284,13 @@ public class ViewBook extends AppCompatActivity {
                     displayRating.setRating(Float.parseFloat(book.getRating()));
 
                     title = book.getTitle();
+                    image = book.getImage();
 
                     eTitle.setText(book.getTitle(), TextView.BufferType.EDITABLE);
                     eAuthor.setText(book.getAuthor(), TextView.BufferType.EDITABLE);
                     ePrice.setText(book.getPrice(), TextView.BufferType.EDITABLE);
                     eQuantity.setText(book.getQuantity(), TextView.BufferType.EDITABLE);
+                    Picasso.with(context).load(image).fit().placeholder(R.mipmap.ic_launcher_round).into(mImageView);
 
                     int pos = 0;
                     final String categoryOptions[] = new String[]{book.getCategory(), "Horror", "Fiction", "Non-fiction", "History", "Biography", "Education"};
