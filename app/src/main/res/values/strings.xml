@@ -6,8 +6,12 @@
         <item>Fiction</item>
         <item>Non-fiction</item>
         <item>History</item>
+        <item>Auto-Biography</item>
         <item>Biography</item>
-        <item>Education</item>
     </string-array>
+
+    <string name="action_settings">Settings</string>
+    <string name="my_cart">My Cart</string>
+    <string name="delete">Remove</string>
 
 </resources>

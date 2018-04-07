@@ -9,30 +9,22 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class Book {
 
-    String id, title, author, price, category, image, quantity, noOfReviews, rating;
+    String id, title, author, category, image;
+    int noOfReviews, stock;
+    Double price, rating;
 
     public Book(){}
 
-    public Book(String id, String title, String author, String price, String category, String quantity, String Image) {
+    public Book(String id, String title, String author, String category, String image, int noOfReviews, int stock, Double price, Double rating) {
         this.id = id;
         this.title = title;
         this.author = author;
-        this.price = price;
         this.category = category;
-        this.quantity = quantity;
         this.image = image;
-    }
-
-    public Book(String id, String title, String author, String price, String category, String quantity, String noOfReviews, String rating, String image) {
-        this.id = id;
-        this.title = title;
-        this.author = author;
-        this.price = price;
-        this.category = category;
-        this.quantity = quantity;
         this.noOfReviews = noOfReviews;
+        this.stock = stock;
+        this.price = price;
         this.rating = rating;
-        this.image = image;
     }
 
     public String getId() {
@@ -59,14 +51,6 @@ public class Book {
         this.author = author;
     }
 
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
     public String getCategory() {
         return category;
     }
@@ -75,35 +59,43 @@ public class Book {
         this.category = category;
     }
 
-    public String getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(String quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getNoOfReviews() {
-        return noOfReviews;
-    }
-
-    public void setNoOfReviews(String noOfReviews) {
-        this.noOfReviews = noOfReviews;
-    }
-
-    public String getRating() {
-        return rating;
-    }
-
-    public void setRating(String rating) {
-        this.rating = rating;
-    }
-
     public String getImage() {
         return image;
     }
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public int getNoOfReviews() {
+        return noOfReviews;
+    }
+
+    public void setNoOfReviews(int noOfReviews) {
+        this.noOfReviews = noOfReviews;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
     }
 }

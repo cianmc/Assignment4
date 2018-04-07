@@ -14,7 +14,19 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="480dp" />
+
+    <TextView
+        android:id="@+id/checkBooks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="430dp"
+        android:layout_marginStart="250dp"
+        android:layout_marginEnd="200dp"
+        android:textAlignment="center"
+        android:visibility="invisible"
+        android:text="No books have been added to the store" />
 
 </LinearLayout>
 

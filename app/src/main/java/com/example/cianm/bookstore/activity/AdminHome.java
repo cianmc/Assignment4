@@ -12,7 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class AdminHome extends AppCompatActivity {
 
-    Button mSignOut, mAddBook, mSearchBook;
+    Button mSignOut, mAddBook, mSearchBook, mViewCart;
     FirebaseAuth mAuth;
 
     @Override
@@ -26,6 +26,7 @@ public class AdminHome extends AppCompatActivity {
         mSignOut = (Button) findViewById(R.id.signOut);
         mAddBook = (Button) findViewById(R.id.addBook);
         mSearchBook = (Button) findViewById(R.id.searchBtn);
+        mViewCart = (Button) findViewById(R.id.viewCartBtn);
 
         mAddBook.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,6 +39,13 @@ public class AdminHome extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(AdminHome.this, SearchBook.class));
+            }
+        });
+
+        mViewCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AdminHome.this, ViewCart.class));
             }
         });
 

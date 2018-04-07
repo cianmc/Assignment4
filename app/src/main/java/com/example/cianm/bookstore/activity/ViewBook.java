@@ -5,13 +5,11 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -19,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.cianm.bookstore.R;
 import com.example.cianm.bookstore.entity.Book;
+import com.example.cianm.bookstore.entity.Cart;
 import com.example.cianm.bookstore.entity.Comment;
 import com.example.cianm.bookstore.entity.GlobalVariables;
 import com.example.cianm.bookstore.entity.User;
@@ -31,9 +30,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,14 +41,15 @@ public class ViewBook extends AppCompatActivity {
     FirebaseUser fbUser;
     Context context;
 
-    TextView mTitle, mAuthor, mCategory, mPrice, mQuantity, quantityTV, noComments;
-    EditText eTitle, eAuthor, ePrice, eQuantity, mComment;
-    Button bEdit, bSave, bAddToCart, bPostReview;
+    TextView mTitle, mAuthor, mCategory, mPrice, mStock, stockTV, noComments, mQuantity;
+    EditText eTitle, eAuthor, ePrice, eStock, mComment;
+    Button bEdit, bSave, bAddToCart, bPostReview, bMinusQuantity, bPlusQuantity;
     RatingBar rating, displayRating;
     Spinner spinner;
     ListView mCommentLV;
     ImageView mImageView;
     String bookID, userName, title, image;
+    Integer quan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,15 +65,16 @@ public class ViewBook extends AppCompatActivity {
         mAuthor = (TextView) findViewById(R.id.viewAuthor);
         mCategory = (TextView) findViewById(R.id.viewCategory);
         mPrice = (TextView) findViewById(R.id.viewPrice);
-        mQuantity = (TextView) findViewById(R.id.viewQuantity);
-        quantityTV = (TextView) findViewById(R.id.quantityTV);
+        mStock = (TextView) findViewById(R.id.viewStock);
+        stockTV = (TextView) findViewById(R.id.stockTV);
         noComments = (TextView) findViewById(R.id.noComments);
+        mQuantity = (TextView) findViewById(R.id.quantityValue);
 
         //EditText
         eTitle = (EditText) findViewById(R.id.editTitle);
         eAuthor = (EditText) findViewById(R.id.editAuthor);
         ePrice = (EditText) findViewById(R.id.editPrice);
-        eQuantity = (EditText) findViewById(R.id.editQuantity);
+        eStock = (EditText) findViewById(R.id.editStock);
         mComment = (EditText) findViewById(R.id.editComment);
 
         //Buttons
@@ -84,6 +82,8 @@ public class ViewBook extends AppCompatActivity {
         bSave = (Button) findViewById(R.id.saveBtn);
         bAddToCart = (Button) findViewById(R.id.addToCartBtn);
         bPostReview = (Button) findViewById(R.id.postReviewBtn);
+        bMinusQuantity = (Button) findViewById(R.id.quantityMinusBtn);
+        bPlusQuantity = (Button) findViewById(R.id.quantityPlusBtn);
 
         //ProgressBar & Spinner & ListView & ImageView
         mImageView = (ImageView) findViewById(R.id.imageViewBook);
@@ -95,6 +95,7 @@ public class ViewBook extends AppCompatActivity {
         displayRating.setStepSize(0.5f);
 
         noComments.setVisibility(View.INVISIBLE);
+        bMinusQuantity.setVisibility(View.INVISIBLE);
 
         mUserRef = FirebaseDatabase.getInstance().getReference("User");
         mUserRef.child(fbUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -105,9 +106,9 @@ public class ViewBook extends AppCompatActivity {
                 if(!userName.equalsIgnoreCase("Admin")){
                     bEdit.setVisibility(View.INVISIBLE);
                     bSave.setVisibility(View.INVISIBLE);
-                    mQuantity.setVisibility(View.INVISIBLE);
-                    eQuantity.setVisibility(View.INVISIBLE);
-                    quantityTV.setVisibility(View.INVISIBLE);
+                    mStock.setVisibility(View.INVISIBLE);
+                    eStock.setVisibility(View.INVISIBLE);
+                    stockTV.setVisibility(View.INVISIBLE);
                 }
             }
 
@@ -118,6 +119,28 @@ public class ViewBook extends AppCompatActivity {
         });
 
         getBookDetails();
+
+        bPlusQuantity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quan = Integer.parseInt(mQuantity.getText().toString());
+                bMinusQuantity.setVisibility(View.VISIBLE);
+                quan++;
+                mQuantity.setText(Integer.toString(quan));
+            }
+        });
+
+        bMinusQuantity.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                quan = Integer.parseInt(mQuantity.getText().toString());
+                quan--;
+                if (quan == 1){
+                    bMinusQuantity.setVisibility(View.INVISIBLE);
+                }
+                mQuantity.setText(Integer.toString(quan));
+            }
+        });
 
         bEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,18 +206,12 @@ public class ViewBook extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         Book book = ds.getValue(Book.class);
-                        String noOfRatings = book.getNoOfReviews();
-                        String rating = book.getRating();
+                        int noOfRatings = book.getNoOfReviews();
+                        Double rating = book.getRating();
 
-                        Double oldRating = Double.valueOf(rating);
-                        int oldNoOfRatings = Integer.valueOf(noOfRatings);
+                        noOfRatings++;
 
-                        oldNoOfRatings++;
-
-                        Float newRating = (float)((rate + oldRating) / oldNoOfRatings);
-
-                        String savedRating = String.valueOf(newRating);
-                        String savedNoOfRatings = String.valueOf(oldNoOfRatings);
+                        Double newRating = (rate + rating) / noOfRatings;
 
                         mCommentRef = FirebaseDatabase.getInstance().getReference("Comment");
 
@@ -205,13 +222,14 @@ public class ViewBook extends AppCompatActivity {
                         Comment com = new Comment(userName, title, sRate, comment, bookID);
                         mCommentRef = FirebaseDatabase.getInstance().getReference("Comment");
                         mCommentRef.child(bookID).child(commentID).setValue(com);
-                        mBookRef.child(bookID).child("noOfReviews").setValue(savedNoOfRatings);
-                        mBookRef.child(bookID).child("rating").setValue(savedRating);
+                        mBookRef.child(bookID).child("noOfReviews").setValue(noOfRatings);
+                        mBookRef.child(bookID).child("rating").setValue(newRating);
                         Toast.makeText(getApplicationContext(), "You gave a rating of " + sRate, Toast.LENGTH_LONG).show();
                         if (userName.equalsIgnoreCase("Admin")) {
                             startActivity(new Intent(ViewBook.this, AdminHome.class));
+                        } else {
+                            startActivity(new Intent(ViewBook.this, CustomerHome.class));
                         }
-                        startActivity(new Intent(ViewBook.this, CustomerHome.class));
                     }
                 }
 
@@ -230,12 +248,13 @@ public class ViewBook extends AppCompatActivity {
         String title = mTitle.getText().toString();
         String author = mAuthor.getText().toString();
         String category = mCategory.getText().toString();
-        String price = mPrice.getText().toString();
-        String quantity = "1";
+        Double price = Double.parseDouble(mPrice.getText().toString());
+        int quantity = Integer.parseInt(mQuantity.getText().toString());
+        Double total = price*quantity;
 
-        Book book = new Book(bookID, title, author, category, price, quantity, image);
-        mCartRef.child(fbUser.getUid()).child(cartID).setValue(book);
-        Toast.makeText(getApplicationContext(), "Added " + book.getTitle() + " to cart", Toast.LENGTH_LONG).show();
+        Cart cart = new Cart(userName, bookID, title, author, category, cartID, quantity, price, total, image);
+        mCartRef.child(fbUser.getUid()).child(cartID).setValue(cart);
+        Toast.makeText(getApplicationContext(), "Added " + cart.getTitle() + " to cart", Toast.LENGTH_LONG).show();
         if (userName.equalsIgnoreCase("Admin")) {
             startActivity(new Intent(ViewBook.this, AdminHome.class));
         } else {
@@ -248,23 +267,24 @@ public class ViewBook extends AppCompatActivity {
         String newTitle = eTitle.getText().toString();
         String newAuthor = eAuthor.getText().toString();
         String newCategory = spinner.getSelectedItem().toString();
-        String newPrice = ePrice.getText().toString();
-        int quantity = Integer.parseInt(eQuantity.getText().toString());
+        Double newPrice = Double.parseDouble(ePrice.getText().toString());
+        int newStock = Integer.parseInt(eStock.getText().toString());
 
-        String newQuantity = Integer.toString(quantity);
+        String newStockS = Integer.toString(newStock);
+        String newPriceS = Double.toString(newPrice);
         mBookRef.child(bookID).child("title").setValue(newTitle);
         mBookRef.child(bookID).child("author").setValue(newAuthor);
         mBookRef.child(bookID).child("category").setValue(newCategory);
         mBookRef.child(bookID).child("price").setValue(newPrice);
-        mBookRef.child(bookID).child("quantity").setValue(newQuantity);
+        mBookRef.child(bookID).child("stock").setValue(newStock);
 
         saveBook();
 
         mTitle.setText(newTitle);
         mAuthor.setText(newAuthor);
         mCategory.setText(newCategory);
-        mPrice.setText(newPrice);
-        mQuantity.setText(newQuantity);
+        mPrice.setText(newPriceS);
+        mStock.setText(newStockS);
 
     }
 
@@ -279,21 +299,22 @@ public class ViewBook extends AppCompatActivity {
                     mTitle.setText(book.getTitle());
                     mAuthor.setText(book.getAuthor());
                     mCategory.setText(book.getCategory());
-                    mPrice.setText(book.getPrice());
-                    mQuantity.setText(book.getQuantity());
-                    displayRating.setRating(Float.parseFloat(book.getRating()));
+                    mPrice.setText(String.valueOf(book.getPrice()));
+                    mStock.setText(String.valueOf(book.getStock()));
+                    mQuantity.setText("1");
+                    displayRating.setRating(Float.parseFloat(book.getRating().toString()));
 
                     title = book.getTitle();
                     image = book.getImage();
 
                     eTitle.setText(book.getTitle(), TextView.BufferType.EDITABLE);
                     eAuthor.setText(book.getAuthor(), TextView.BufferType.EDITABLE);
-                    ePrice.setText(book.getPrice(), TextView.BufferType.EDITABLE);
-                    eQuantity.setText(book.getQuantity(), TextView.BufferType.EDITABLE);
+                    ePrice.setText(String.valueOf(book.getPrice()), TextView.BufferType.EDITABLE);
+                    eStock.setText(String.valueOf(book.getStock()), TextView.BufferType.EDITABLE);
                     Picasso.with(context).load(image).fit().placeholder(R.mipmap.ic_launcher_round).into(mImageView);
 
                     int pos = 0;
-                    final String categoryOptions[] = new String[]{book.getCategory(), "Horror", "Fiction", "Non-fiction", "History", "Biography", "Education"};
+                    final String categoryOptions[] = new String[]{book.getCategory(), "Horror", "Fiction", "Non-fiction", "History", "Auto-Biography", "Biography"};
                     ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(ViewBook.this, android.R.layout.simple_spinner_dropdown_item, categoryOptions);
                     spinner.setAdapter(arrayAdapter);
                     spinner.setSelection(pos);
@@ -312,33 +333,44 @@ public class ViewBook extends AppCompatActivity {
         mComment.setVisibility(View.INVISIBLE);
         bEdit.setVisibility(View.INVISIBLE);
         bSave.setVisibility(View.VISIBLE);
+        bMinusQuantity.setVisibility(View.INVISIBLE);
+        bPlusQuantity.setVisibility(View.INVISIBLE);
 
         mTitle.setVisibility(View.INVISIBLE);
         mAuthor.setVisibility(View.INVISIBLE);
         mCategory.setVisibility(View.INVISIBLE);
         mPrice.setVisibility(View.INVISIBLE);
-        mQuantity.setVisibility(View.INVISIBLE);
+        mStock.setVisibility(View.INVISIBLE);
 
         eTitle.setVisibility(View.VISIBLE);
         eAuthor.setVisibility(View.VISIBLE);
         spinner.setVisibility(View.VISIBLE);
         ePrice.setVisibility(View.VISIBLE);
-        eQuantity.setVisibility(View.VISIBLE);
+        eStock.setVisibility(View.VISIBLE);
     }
 
     public void saveBook(){
+
+        quan = Integer.parseInt(mQuantity.getText().toString());
+        if (quan == 1){
+            bMinusQuantity.setVisibility(View.INVISIBLE);
+            bPlusQuantity.setVisibility(View.VISIBLE);
+        } else {
+            bMinusQuantity.setVisibility(View.VISIBLE);
+            bPlusQuantity.setVisibility(View.VISIBLE);
+        }
 
         eTitle.setVisibility(View.INVISIBLE);
         eAuthor.setVisibility(View.INVISIBLE);
         spinner.setVisibility(View.INVISIBLE);
         ePrice.setVisibility(View.INVISIBLE);
-        eQuantity.setVisibility(View.INVISIBLE);
+        eStock.setVisibility(View.INVISIBLE);
 
         mTitle.setVisibility(View.VISIBLE);
         mAuthor.setVisibility(View.VISIBLE);
         mCategory.setVisibility(View.VISIBLE);
         mPrice.setVisibility(View.VISIBLE);
-        mQuantity.setVisibility(View.VISIBLE);
+        mStock.setVisibility(View.VISIBLE);
 
         bAddToCart.setVisibility(View.VISIBLE);
         mComment.setVisibility(View.VISIBLE);

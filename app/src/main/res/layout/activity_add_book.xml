@@ -128,25 +128,25 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/quantityTV"
+        android:id="@+id/stockTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="275dp"
         android:layout_marginTop="460dp"
-        android:text="Quantity"
+        android:text="Stock"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/quantityEditText"
+        android:id="@+id/stockEditText"
         android:layout_width="283dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="75dp"
         android:layout_marginTop="450dp"
         android:ems="10"
-        android:hint="Quantity"
+        android:hint="Number in stock"
         android:inputType="number"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"

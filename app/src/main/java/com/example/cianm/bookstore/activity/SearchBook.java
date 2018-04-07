@@ -10,7 +10,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.example.cianm.bookstore.R;
 import com.example.cianm.bookstore.entity.GlobalVariables;
@@ -27,6 +27,7 @@ import java.util.ArrayList;
 public class SearchBook extends AppCompatActivity{
 
     EditText mSearchEditText;
+    TextView mNoBooks;
     RecyclerView recyclerView;
     DatabaseReference mDatabase;
     FirebaseUser firebaseUser;
@@ -35,7 +36,7 @@ public class SearchBook extends AppCompatActivity{
     ArrayList<String> authorList;
     ArrayList<String> categoryList;
     ArrayList<String> priceList;
-    ArrayList<String> quantityList;
+    ArrayList<String> stockList;
     ArrayList <String> bookImageList;
 
     SearchAdapter searchAdapter;
@@ -48,6 +49,7 @@ public class SearchBook extends AppCompatActivity{
 
         mSearchEditText = (EditText) findViewById(R.id.search_edit_text);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mNoBooks = (TextView) findViewById(R.id.checkBooks);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -61,7 +63,7 @@ public class SearchBook extends AppCompatActivity{
         authorList = new ArrayList<>();
         categoryList = new ArrayList<>();
         priceList = new ArrayList<>();
-        quantityList = new ArrayList<>();
+        stockList = new ArrayList<>();
         bookImageList = new ArrayList<>();
 
         mSearchEditText.addTextChangedListener(new TextWatcher() {
@@ -85,7 +87,7 @@ public class SearchBook extends AppCompatActivity{
                     authorList.clear();
                     categoryList.clear();
                     priceList.clear();
-                    quantityList.clear();
+                    stockList.clear();
                     bookImageList.clear();
                     recyclerView.removeAllViews();
                 }
@@ -104,64 +106,71 @@ public class SearchBook extends AppCompatActivity{
                 authorList.clear();
                 categoryList.clear();
                 priceList.clear();
-                quantityList.clear();
+                stockList.clear();
                 bookImageList.clear();
                 recyclerView.removeAllViews();
 
                 int counter = 0;
 
-                for (DataSnapshot ds : dataSnapshot.getChildren()){
-                    String uid = ds.getKey();
-                    String id = ds.child("id").getValue(String.class);
-                    String title = ds.child("title").getValue(String.class);
-                    String author = ds.child("author").getValue(String.class);
-                    String category = ds.child("category").getValue(String.class);
-                    String price = ds.child("price").getValue(String.class);
-                    String quantity = ds.child("quantity").getValue(String.class);
-                    String image = ds.child("image").getValue(String.class);
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
-                    if (title.toLowerCase().contains(searchedString.toLowerCase())){
-                        idList.add(id);
-                        titleList.add(title);
-                        authorList.add(author);
-                        categoryList.add(category);
-                        priceList.add(price);
-                        quantityList.add(quantity);
-                        bookImageList.add(image);
-                        counter++;
-                    } else if (author.toLowerCase().contains(searchedString.toLowerCase())) {
-                        idList.add(id);
-                        titleList.add(title);
-                        authorList.add(author);
-                        categoryList.add(category);
-                        priceList.add(price);
-                        quantityList.add(quantity);
-                        bookImageList.add(image);
-                        counter++;
-                    } else if (category.toLowerCase().contains(searchedString.toLowerCase())){
-                        idList.add(id);
-                        titleList.add(title);
-                        authorList.add(author);
-                        categoryList.add(category);
-                        priceList.add(price);
-                        quantityList.add(quantity);
-                        bookImageList.add(image);
-                        counter++;
-                    }
-                    if(counter == 15){
-                        break;
-                    }
+                    if (!dataSnapshot.exists()) {
+                        recyclerView.setVisibility(View.INVISIBLE);
+                        mNoBooks.setVisibility(View.VISIBLE);
+                    } else {
 
-                    searchAdapter = new SearchAdapter(SearchBook.this, idList, titleList, authorList, categoryList, priceList, quantityList, bookImageList, new RecyclerViewClickListener() {
-                        @Override
-                        public void recyclerViewLisClicked(View v, int position) {
-                            ((GlobalVariables) SearchBook.this.getApplication()).setCurrentBook(idList.get(position).toString());
-                            startActivity(new Intent(SearchBook.this, ViewBook.class));
+                        String uid = ds.getKey();
+                        String id = ds.child("id").getValue(String.class);
+                        String title = ds.child("title").getValue(String.class);
+                        String author = ds.child("author").getValue(String.class);
+                        String category = ds.child("category").getValue(String.class);
+                        String price = ds.child("price").getValue(Double.class).toString();
+                        String stock = ds.child("stock").getValue(Integer.class).toString();
+                        String image = ds.child("image").getValue(String.class);
+
+                        if (title.toLowerCase().contains(searchedString.toLowerCase())) {
+                            idList.add(id);
+                            titleList.add(title);
+                            authorList.add(author);
+                            categoryList.add(category);
+                            priceList.add(price);
+                            stockList.add(stock);
+                            bookImageList.add(image);
+                            counter++;
+                        } else if (author.toLowerCase().contains(searchedString.toLowerCase())) {
+                            idList.add(id);
+                            titleList.add(title);
+                            authorList.add(author);
+                            categoryList.add(category);
+                            priceList.add(price);
+                            stockList.add(stock);
+                            bookImageList.add(image);
+                            counter++;
+                        } else if (category.toLowerCase().contains(searchedString.toLowerCase())) {
+                            idList.add(id);
+                            titleList.add(title);
+                            authorList.add(author);
+                            categoryList.add(category);
+                            priceList.add(price);
+                            stockList.add(stock);
+                            bookImageList.add(image);
+                            counter++;
                         }
-                    });
-                    recyclerView.setAdapter(searchAdapter);
+                        if (counter == 15) {
+                            break;
+                        }
+
+                        searchAdapter = new SearchAdapter(SearchBook.this, idList, titleList, authorList, categoryList, priceList, stockList, bookImageList, new RecyclerViewClickListener() {
+                            @Override
+                            public void recyclerViewLisClicked(View v, int position) {
+                                ((GlobalVariables) SearchBook.this.getApplication()).setCurrentBook(idList.get(position).toString());
+                                startActivity(new Intent(SearchBook.this, ViewBook.class));
+                            }
+                        });
+                        recyclerView.setAdapter(searchAdapter);
 
 
+                    }
                 }
             }
 
@@ -170,5 +179,12 @@ public class SearchBook extends AppCompatActivity{
 
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        recyclerView.setVisibility(View.VISIBLE);
+        mNoBooks.setVisibility(View.INVISIBLE);
     }
 }

@@ -71,36 +71,36 @@
         app:layout_constraintTop_toBottomOf="@+id/categoryTV" />
 
     <TextView
-        android:id="@+id/quantityTV"
+        android:id="@+id/stockTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="400dp"
-        android:layout_marginTop="60dp"
-        android:text="Quantity"
+        android:layout_marginTop="64dp"
+        android:text="Stock"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/priceTV" />
+        app:layout_constraintTop_toBottomOf="@+id/quantityTV" />
 
     <Button
         android:id="@+id/editBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="400dp"
-        android:layout_marginTop="464dp"
+        android:layout_marginTop="35dp"
         android:text="Edit "
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/stockTV" />
     <Button
         android:id="@+id/saveBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="400dp"
-        android:layout_marginTop="464dp"
+        android:layout_marginTop="35dp"
         android:text="Save "
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/stockTV" />
 
     <TextView
         android:id="@+id/viewTitle"
@@ -154,16 +154,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/viewQuantity"
+        android:id="@+id/viewStock"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="69dp"
-        android:layout_marginTop="404dp"
+        android:layout_marginTop="476dp"
         android:text="Loading..."
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.841"
-        app:layout_constraintStart_toEndOf="@+id/quantityTV"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/stockTV"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -183,7 +183,7 @@
         android:id="@+id/addToCartBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="372dp"
+        android:layout_marginBottom="310dp"
         android:layout_marginEnd="88dp"
         android:text="Add to Cart"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -231,7 +231,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="540dp"
+        android:layout_marginTop="620dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -274,11 +274,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editQuantity"
+        android:id="@+id/editStock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
-        android:layout_marginTop="384dp"
+        android:layout_marginTop="460dp"
         android:ems="10"
         android:inputType="number"
         android:visibility="invisible"
@@ -317,5 +317,50 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/quantityTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="392dp"
+        android:layout_marginTop="48dp"
+        android:text="Quantity"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/priceTV" />
+
+    <Button
+        android:id="@+id/quantityMinusBtn"
+        android:layout_width="55dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/ic_remove_circle"
+        app:layout_constraintStart_toEndOf="@+id/quantityTV"
+        app:layout_constraintTop_toBottomOf="@+id/euroSign" />
+
+    <TextView
+        android:id="@+id/quantityValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="30dp"
+        android:text="0"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="30sp"
+        app:layout_constraintStart_toEndOf="@+id/quantityMinusBtn"
+        app:layout_constraintTop_toBottomOf="@+id/editPrice" />
+
+    <Button
+        android:id="@+id/quantityPlusBtn"
+        android:layout_width="51dp"
+        android:layout_height="44dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/ic_add_circle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewPrice" />
+
 
 </android.support.constraint.ConstraintLayout>

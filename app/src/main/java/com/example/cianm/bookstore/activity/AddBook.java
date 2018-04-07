@@ -38,7 +38,7 @@ public class AddBook extends AppCompatActivity {
 
     DatabaseReference mBookRef;
 
-    EditText mTitle, mAuthor, mPrice, mQuantity;
+    EditText mTitle, mAuthor, mPrice, mStock;
     Spinner mCategory;
     Button mAddBook, mChooseImage;
     ImageView mImageView;
@@ -61,7 +61,7 @@ public class AddBook extends AppCompatActivity {
         mTitle = (EditText) findViewById(R.id.titleEditText);
         mAuthor = (EditText) findViewById(R.id.authorEditText);
         mPrice = (EditText) findViewById(R.id.priceEditText);
-        mQuantity = (EditText) findViewById(R.id.quantityEditText);
+        mStock = (EditText) findViewById(R.id.stockEditText);
         mCategory = (Spinner) findViewById(R.id.categorySpinner);
         mAddBook = (Button) findViewById(R.id.addBookBtn);
         mChooseImage = (Button) findViewById(R.id.chooseImage);
@@ -85,9 +85,9 @@ public class AddBook extends AppCompatActivity {
                 mProgressBar.setVisibility(View.VISIBLE);
                 final String title = mTitle.getText().toString();
                 final String author = mAuthor.getText().toString();
-                final String price = mPrice.getText().toString();
+                final Double price = Double.parseDouble(mPrice.getText().toString());
                 final String category = mCategory.getSelectedItem().toString();
-                int quantity = Integer.parseInt(mQuantity.getText().toString());
+                final int stock = Integer.parseInt(mStock.getText().toString());
                 if (title.equals("")) {
                     Toast.makeText(getApplicationContext(), "Please enter in a title", Toast.LENGTH_SHORT).show();
                     return;
@@ -97,13 +97,12 @@ public class AddBook extends AppCompatActivity {
                 } else if (price.equals("")) {
                     Toast.makeText(getApplicationContext(), "Please enter in a price", Toast.LENGTH_SHORT).show();
                     return;
-                } else if (quantity <= 0) {
-                    Toast.makeText(getApplicationContext(), "Quantity cannot be 0 or a negative number", Toast.LENGTH_SHORT).show();
+                } else if (stock <= 0) {
+                    Toast.makeText(getApplicationContext(), "Stock cannot be 0 or a negative number", Toast.LENGTH_SHORT).show();
                     return;
                 } else {
-                    final String quantityS = Integer.toString(quantity);
-                    final String avgRating = "0";
-                    final String noOfRatings = "0";
+                    final Double avgRating = 0.00;
+                    final int noOfRatings = 0;
                     StorageReference ref = mStorageReference.child("images/" + UUID.randomUUID().toString());
                     ref.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -112,7 +111,7 @@ public class AddBook extends AppCompatActivity {
                             Uri uri = taskSnapshot.getDownloadUrl();
                             String imagePath = uri.toString();
                             Toast.makeText(AddBook.this, "Uploaded Image", Toast.LENGTH_SHORT).show();
-                            book = new Book(bookID, title, author, price, category, quantityS, avgRating, noOfRatings, imagePath);
+                            book = new Book(bookID, title, author,category, imagePath, noOfRatings, stock, price, avgRating);
                             mBookRef.child(bookID).setValue(book);
                             mAddBook.setVisibility(View.INVISIBLE);
                             Toast.makeText(getApplicationContext(), "Book added: " + book.getTitle(), Toast.LENGTH_LONG).show();

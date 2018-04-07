@@ -12,19 +12,36 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="340dp"
         android:layout_marginStart="340dp"
-        android:layout_marginTop="676dp"
+        android:layout_marginTop="752dp"
         android:text="Sign Out"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/searchBookBtn"
-        android:layout_width="wrap_content"
+        android:id="@+id/searchBtn"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="340dp"
-        android:layout_marginTop="490dp"
-        android:text="Search Book"
+        android:layout_marginEnd="250dp"
+        android:layout_marginStart="250dp"
+        android:layout_marginTop="220dp"
+        android:text="Search Books"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/viewCartBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="250dp"
+        android:layout_marginStart="250dp"
+        android:layout_marginTop="350dp"
+        android:text="View Cart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

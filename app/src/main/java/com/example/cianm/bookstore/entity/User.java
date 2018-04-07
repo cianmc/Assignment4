@@ -20,12 +20,13 @@ public class User {
         this.noOfPurchases = noOfPurchases;
     }
 
-    public User(String name, String email, String password, String shippingAddress, String paymentDetails) {
+    public User(String name, String email, String password, String shippingAddress, String paymentDetails, String noOfPurchases) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.shippingAddress = shippingAddress;
         this.paymentDetails = paymentDetails;
+        this.noOfPurchases = noOfPurchases;
     }
 
     public String getName() {

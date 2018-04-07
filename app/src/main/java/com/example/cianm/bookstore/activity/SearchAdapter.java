@@ -28,10 +28,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     ArrayList<String> authorList;
     ArrayList<String> categoryList;
     ArrayList<String> priceList;
-    ArrayList<String> quantityList;
+    ArrayList<String> stockList;
     ArrayList<String> bookImageList;
 
-    public SearchAdapter(Context context, ArrayList<String> idList, ArrayList<String> titleList, ArrayList<String> authorList, ArrayList<String> categoryList, ArrayList<String> priceList, ArrayList<String> quantityList, ArrayList<String> bookImageList, RecyclerViewClickListener itemListener) {
+    public SearchAdapter(Context context, ArrayList<String> idList, ArrayList<String> titleList, ArrayList<String> authorList, ArrayList<String> categoryList, ArrayList<String> priceList, ArrayList<String> stockList, ArrayList<String> bookImageList, RecyclerViewClickListener itemListener) {
         this.context = context;
         this.itemListener = itemListener;
         this.idList = idList;
@@ -39,7 +39,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         this.authorList = authorList;
         this.categoryList = categoryList;
         this.priceList = priceList;
-        this.quantityList = quantityList;
+        this.stockList = stockList;
         this.bookImageList = bookImageList;
     }
 
