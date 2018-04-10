@@ -1,7 +1,6 @@
-package com.example.cianm.bookstore.activity;
+package com.example.cianm.bookstore.adapters;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.cianm.bookstore.R;
+import com.example.cianm.bookstore.activity.RecyclerViewClickListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -27,11 +26,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     ArrayList<String> titleList;
     ArrayList<String> authorList;
     ArrayList<String> categoryList;
-    ArrayList<String> priceList;
-    ArrayList<String> stockList;
+    ArrayList<Double> priceList;
+    ArrayList<Integer> stockList;
     ArrayList<String> bookImageList;
 
-    public SearchAdapter(Context context, ArrayList<String> idList, ArrayList<String> titleList, ArrayList<String> authorList, ArrayList<String> categoryList, ArrayList<String> priceList, ArrayList<String> stockList, ArrayList<String> bookImageList, RecyclerViewClickListener itemListener) {
+    public SearchAdapter(Context context, ArrayList<String> idList, ArrayList<String> titleList, ArrayList<String> authorList, ArrayList<String> categoryList, ArrayList<Double> priceList, ArrayList<Integer> stockList, ArrayList<String> bookImageList, RecyclerViewClickListener itemListener) {
         this.context = context;
         this.itemListener = itemListener;
         this.idList = idList;
@@ -76,7 +75,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     public void onBindViewHolder(SearchViewHolder holder, int position) {
         holder.mTitle.setText(titleList.get(position));
         holder.mAuthor.setText(authorList.get(position));
-        holder.mPrice.setText("€ " + priceList.get(position));
+        holder.mPrice.setText("€ " + priceList.get(position).toString());
         holder.mCategory.setText(categoryList.get(position));
 
         Picasso.with(context).load(bookImageList.get(position)).fit().placeholder(R.mipmap.ic_launcher_round).into(holder.bookImage);

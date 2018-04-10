@@ -1,4 +1,4 @@
-package com.example.cianm.bookstore.activity;
+package com.example.cianm.bookstore.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

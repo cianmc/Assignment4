@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.cianm.bookstore.R;
+import com.example.cianm.bookstore.adapters.SearchAdapter;
 import com.example.cianm.bookstore.entity.GlobalVariables;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,8 +36,8 @@ public class SearchBook extends AppCompatActivity{
     ArrayList<String> titleList;
     ArrayList<String> authorList;
     ArrayList<String> categoryList;
-    ArrayList<String> priceList;
-    ArrayList<String> stockList;
+    ArrayList<Double> priceList;
+    ArrayList<Integer> stockList;
     ArrayList <String> bookImageList;
 
     SearchAdapter searchAdapter;
@@ -124,8 +125,8 @@ public class SearchBook extends AppCompatActivity{
                         String title = ds.child("title").getValue(String.class);
                         String author = ds.child("author").getValue(String.class);
                         String category = ds.child("category").getValue(String.class);
-                        String price = ds.child("price").getValue(Double.class).toString();
-                        String stock = ds.child("stock").getValue(Integer.class).toString();
+                        Double price = ds.child("price").getValue(Double.class);
+                        Integer stock = ds.child("stock").getValue(Integer.class);
                         String image = ds.child("image").getValue(String.class);
 
                         if (title.toLowerCase().contains(searchedString.toLowerCase())) {

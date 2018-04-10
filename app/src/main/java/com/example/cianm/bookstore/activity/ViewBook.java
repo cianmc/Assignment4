@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cianm.bookstore.R;
+import com.example.cianm.bookstore.adapters.CommentAdapter;
 import com.example.cianm.bookstore.entity.Book;
 import com.example.cianm.bookstore.entity.Cart;
 import com.example.cianm.bookstore.entity.Comment;

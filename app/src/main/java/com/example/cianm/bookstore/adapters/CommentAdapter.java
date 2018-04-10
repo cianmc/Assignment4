@@ -1,4 +1,4 @@
-package com.example.cianm.bookstore.activity;
+package com.example.cianm.bookstore.adapters;
 
 import android.app.Activity;
 import android.content.Context;
