@@ -189,6 +189,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <Button
+        android:id="@+id/deleteBookBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="308dp"
+        android:layout_marginEnd="88dp"
+        android:text="Delete Book"
+        android:textColor="@color/delete"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <RatingBar
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"

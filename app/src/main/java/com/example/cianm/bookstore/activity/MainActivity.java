@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "onAuthStateChanged:signed_in" + fbUser.getUid());
                     mFirebaseDatabase = FirebaseDatabase.getInstance().getReference("User");
                     mFirebaseDatabase.child(fbUser.getUid()).setValue(user);
+                    mFirebaseDatabase.child(fbUser.getUid()).child("id").setValue(fbUser.getUid());
                     Toast.makeText(getApplicationContext(), "Successfully signed in with: " + fbUser.getEmail(), Toast.LENGTH_SHORT).show();
                     if (user.getEmail().equalsIgnoreCase("admin@gmail.com")) {
                         startActivity(new Intent(MainActivity.this, AdminHome.class));
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 } else {
                     // User is signed out
+                    //mEmail.setError("Account already assigned to this email address");
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
             }
@@ -68,18 +71,18 @@ public class MainActivity extends AppCompatActivity {
                 String email = mEmail.getText().toString();
                 String password = mPassword.getText().toString();
                 String name = mName.getText().toString();
-                String noOfPurchases = "0";
-                if (email.equals("")) {
-                    Toast.makeText(MainActivity.this, "Please enter in a email address", Toast.LENGTH_SHORT).show();
-                } else if (password.equals("")) {
-                    Toast.makeText(MainActivity.this, "Please enter in a password address", Toast.LENGTH_SHORT).show();
-                }else if (name.equals("")) {
-                    Toast.makeText(MainActivity.this, "Please enter in your name address", Toast.LENGTH_SHORT).show();
+                int noOfPurchases = 0;
+                if (TextUtils.isEmpty(email)) {
+                    mEmail.setError("Please enter in an email address");
+                } else if (TextUtils.isEmpty(password)) {
+                    mPassword.setError("PLease enter in a password");
+                }else if (TextUtils.isEmpty(name)) {
+                    mName.setError("Please enter in your name");
                 } else if (password.length() < 6) {
                     Toast.makeText(MainActivity.this, "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
                 } else {
                     mAuth.createUserWithEmailAndPassword(email, password);
-                    user = new User(name, email, password, noOfPurchases);
+                    user = new User.UserBuilder(name, email, password).setNoOfPurchases(noOfPurchases).buildUser();
                     mRegister.setVisibility(View.INVISIBLE);
                 }
             }

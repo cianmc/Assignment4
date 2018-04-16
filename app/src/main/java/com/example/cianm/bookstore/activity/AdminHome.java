@@ -7,6 +7,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -36,7 +37,8 @@ public class AdminHome extends AppCompatActivity {
     FirebaseAuth mAuth;
     DatabaseReference mBookRef;
     ArrayList<Book> allBooks;
-    AllBooksAdapter booksAdapter;
+    AllBooksAdapter searchAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,10 @@ public class AdminHome extends AppCompatActivity {
         mPriceAscending = (Button) findViewById(R.id.priceAscendingBtn);
         mPriceDescending = (Button) findViewById(R.id.priceDescendingBtn);
 
+//        mAllBooks.setHasFixedSize(true);
+//        mAllBooks.setLayoutManager(new LinearLayoutManager(this));
+//        mAllBooks.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+
         getAllBooks();
         sortBooks();
 
@@ -89,6 +95,13 @@ public class AdminHome extends AppCompatActivity {
             }
         });
 
+        mPurchaseHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AdminHome.this, PurchaseHistory.class));
+            }
+        });
+
         mSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,6 +116,15 @@ public class AdminHome extends AppCompatActivity {
 
     // Populates the list with all the books in the Database
     public void getAllBooks(){
+
+        final ArrayList<String> idList = new ArrayList<>();
+        final ArrayList<String >titleList = new ArrayList<>();
+        final ArrayList<String> authorList = new ArrayList<>();
+        final ArrayList<String> categoryList = new ArrayList<>();
+        final ArrayList<Double> priceList = new ArrayList<>();
+        final ArrayList<Integer> stockList = new ArrayList<>();
+        final ArrayList<String> bookImageList = new ArrayList<>();
+
         mBookRef = FirebaseDatabase.getInstance().getReference("Book");
         mBookRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -122,12 +144,28 @@ public class AdminHome extends AppCompatActivity {
                         Integer noReviews = ds.child("noOfReviews").getValue(Integer.class);
                         Double rating = ds.child("rating").getValue(Double.class);
 
+                        idList.add(id);
+                        titleList.add(title);
+                        authorList.add(author);
+                        categoryList.add(category);
+                        priceList.add(price);
+                        stockList.add(stock);
+                        bookImageList.add(image);
+
                         Book book = new Book(id, title, author, category, image, noReviews, stock, price, rating);
                         allBooks.add(book);
+
                     }
                 }
-                booksAdapter = new AllBooksAdapter(allBooks, AdminHome.this);
-                mAllBooks.setAdapter(booksAdapter);
+                searchAdapter = new AllBooksAdapter(allBooks, AdminHome.this);
+                mAllBooks.setAdapter(searchAdapter);
+                mAllBooks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        ((GlobalVariables) AdminHome.this.getApplication()).setCurrentBook(allBooks.get(i).getId());
+                        startActivity(new Intent(AdminHome.this, ViewBook.class));
+                    }
+                });
             }
 
             @Override
@@ -149,7 +187,7 @@ public class AdminHome extends AppCompatActivity {
                         return book.getTitle().compareTo(t1.getTitle());
                     }
                 });
-                booksAdapter.notifyDataSetChanged();
+                searchAdapter.notifyDataSetChanged();
             }
         });
 
@@ -164,7 +202,7 @@ public class AdminHome extends AppCompatActivity {
                         return t1.getTitle().compareTo(book.getTitle());
                     }
                 });
-                booksAdapter.notifyDataSetChanged();
+                searchAdapter.notifyDataSetChanged();
             }
         });
 
@@ -179,7 +217,7 @@ public class AdminHome extends AppCompatActivity {
                         return book.getAuthor().compareTo(t1.getAuthor());
                     }
                 });
-                booksAdapter.notifyDataSetChanged();
+                searchAdapter.notifyDataSetChanged();
             }
         });
 
@@ -194,7 +232,7 @@ public class AdminHome extends AppCompatActivity {
                         return t1.getAuthor().compareTo(book.getAuthor());
                     }
                 });
-                booksAdapter.notifyDataSetChanged();
+                searchAdapter.notifyDataSetChanged();
             }
         });
 
@@ -209,7 +247,7 @@ public class AdminHome extends AppCompatActivity {
                         return t1.getPrice().compareTo(book.getPrice());
                     }
                 });
-                booksAdapter.notifyDataSetChanged();
+                searchAdapter.notifyDataSetChanged();
             }
         });
 
@@ -224,7 +262,7 @@ public class AdminHome extends AppCompatActivity {
                         return book.getPrice().compareTo(t1.getPrice());
                     }
                 });
-                booksAdapter.notifyDataSetChanged();
+                searchAdapter.notifyDataSetChanged();
             }
         });
     }

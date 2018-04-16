@@ -9,88 +9,78 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class Cart {
 
-    String userName, bookID, title, author, category, cartID, image;
-    int quantity;
-    double price, total;
+    private String userID, userName, bookID, title, author, category, cartID, image;
+    private int quantity, stock;
+    private double price, total;
 
-    public Cart(){}
-
-    public Cart(String userName, String bookID, String title, String author, String category, String cartID, int quantity, double price, double total, String image) {
-        this.userName = userName;
-        this.bookID = bookID;
-        this.title = title;
-        this.author = author;
-        this.category = category;
-        this.cartID = cartID;
-        this.quantity = quantity;
-        this.price = price;
-        this.total = total;
-        this.image = image;
+    public Cart() {
     }
+
+    private Cart(final CartBuilder builder){
+        userID = builder.userID;
+        userName = builder.userName;
+        bookID = builder.bookID;
+        title = builder.title;
+        author = builder.author;
+        category = builder.category;
+        cartID = builder.cartID;
+        image = builder.image;
+        quantity = builder.quantity;
+        stock = builder.stock;
+        price = builder.price;
+        total = builder.total;
+    }
+
+
+    public String getUserID() {
+        return userID;
+    }
+
 
     public String getUserName() {
         return userName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 
     public String getBookID() {
         return bookID;
     }
 
-    public void setBookID(String bookID) {
-        this.bookID = bookID;
-    }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
 
     public String getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
 
     public String getCartID() {
         return cartID;
     }
 
-    public void setCartID(String cartID) {
-        this.cartID = cartID;
+
+    public String getImage() {
+        return image;
     }
+
 
     public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 
     public double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
 
     public double getTotal() {
         return total;
@@ -100,11 +90,86 @@ public class Cart {
         this.total = total;
     }
 
-    public String getImage() {
-        return image;
+    public int getStock() {
+        return stock;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+
+    public static class CartBuilder {
+        private String userID, userName, bookID, title, author, category, cartID, image;
+        private int quantity, stock;
+        private double price, total;
+
+        public CartBuilder (String title, int quantity, String userName, String image){
+            this.title = title;
+            this.quantity = quantity;
+            this.userName = userName;
+            this.image = image;
+        }
+
+        public CartBuilder setTitle(String title){
+            this.title = title;
+            return this;
+        }
+
+        public CartBuilder setQuantity(int quantity){
+            this.quantity = quantity;
+            return this;
+        }
+
+        public CartBuilder setUsername(String userName){
+            this.userName = userName;
+            return this;
+        }
+
+        public CartBuilder setImage(String image){
+            this.image = image;
+            return this;
+        }
+
+        public CartBuilder setUserID(String userID){
+            this.userID = userID;
+            return this;
+        }
+
+        public CartBuilder setBookID(String bookID){
+            this.bookID = bookID;
+            return this;
+        }
+
+        public CartBuilder setAuthor(String author){
+            this.author = author;
+            return this;
+        }
+
+        public CartBuilder setCategory(String category){
+            this.category = category;
+            return this;
+        }
+
+        public CartBuilder setCartID(String cartID){
+            this.cartID = cartID;
+            return this;
+        }
+
+        public CartBuilder setStock(int stock){
+            this.stock = stock;
+            return this;
+        }
+
+        public CartBuilder setPrice(Double price){
+            this.price = price;
+            return this;
+        }
+
+        public CartBuilder setTotal(Double total){
+            this.total = total;
+            return this;
+        }
+
+        public Cart buildCart(){
+            return new Cart(this);
+        }
+
     }
 }

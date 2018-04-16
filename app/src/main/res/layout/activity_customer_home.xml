@@ -42,18 +42,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/customerPurchaseHistoryBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="27dp"
-        android:layout_marginEnd="103dp"
-        android:layout_marginStart="72dp"
-        android:text="Customers Purchase History"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/viewCartBtn"
-        app:layout_constraintStart_toEndOf="@+id/addBook" />
-
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"

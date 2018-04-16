@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="duskYellow">#daa520</color>
     <color name="defaultRating">#969494</color>
+    <color name="delete">#ff0000</color>
 </resources>

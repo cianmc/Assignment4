@@ -1,5 +1,6 @@
 package com.example.cianm.bookstore.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -47,6 +48,13 @@ public class ViewCart extends AppCompatActivity {
         mCartRV.setHasFixedSize(true);
         mCartRV.setLayoutManager(new LinearLayoutManager(this));
         mCartRV.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+
+        mProceedToPayment.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ViewCart.this, PaymentDetails.class));
+            }
+        });
 
         addCartItems();
     }

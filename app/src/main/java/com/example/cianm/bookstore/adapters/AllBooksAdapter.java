@@ -28,7 +28,6 @@ public class AllBooksAdapter extends ArrayAdapter<Book> {
 
     Context context;
     ArrayList<Book> books;
-    int pos;
 
     private static class ViewHolder {
         TextView titleTV;

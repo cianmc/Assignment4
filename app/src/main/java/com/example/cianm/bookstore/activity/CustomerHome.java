@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import com.example.cianm.bookstore.R;
 import com.example.cianm.bookstore.adapters.AllBooksAdapter;
 import com.example.cianm.bookstore.entity.Book;
+import com.example.cianm.bookstore.entity.GlobalVariables;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,7 +27,7 @@ import java.util.Comparator;
 
 public class CustomerHome extends AppCompatActivity {
 
-    Button mSignOut, mSearchBook, mViewCart, mPurchaseHistory, mTitleAscending, mTitleDescending, mAuthorAscending, mAuthorDescending, mPriceAscending, mPriceDescending;
+    Button mSignOut, mSearchBook, mViewCart, mTitleAscending, mTitleDescending, mAuthorAscending, mAuthorDescending, mPriceAscending, mPriceDescending;
     TextView mNoBooks;
     ListView mAllBooks;
     FirebaseAuth mAuth;
@@ -48,7 +50,6 @@ public class CustomerHome extends AppCompatActivity {
         mSignOut = (Button) findViewById(R.id.signOut);
         mSearchBook = (Button) findViewById(R.id.searchBtn);
         mViewCart = (Button) findViewById(R.id.viewCartBtn);
-        mPurchaseHistory = (Button) findViewById(R.id.customerPurchaseHistoryBtn);
         mNoBooks = (TextView) findViewById(R.id.noBooks);
         mAllBooks = (ListView) findViewById(R.id.allBooksListView);
 
@@ -116,6 +117,13 @@ public class CustomerHome extends AppCompatActivity {
                 }
                 booksAdapter = new AllBooksAdapter(allBooks, CustomerHome.this);
                 mAllBooks.setAdapter(booksAdapter);
+                mAllBooks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        ((GlobalVariables) CustomerHome.this.getApplication()).setCurrentBook(allBooks.get(i).getId());
+                        startActivity(new Intent(CustomerHome.this, ViewBook.class));
+                    }
+                });
             }
 
             @Override

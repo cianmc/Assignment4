@@ -8,7 +8,7 @@ import android.app.Application;
 
 public class GlobalVariables extends Application{
 
-    String currentBook;
+    String currentBook, currentCustomer;
 
     public String getCurrentBook() {
         return currentBook;
@@ -16,5 +16,13 @@ public class GlobalVariables extends Application{
 
     public void setCurrentBook(String currentBook) {
         this.currentBook = currentBook;
+    }
+
+    public String getCurrentCustomer() {
+        return currentCustomer;
+    }
+
+    public void setCurrentCustomer(String currentCustomer) {
+        this.currentCustomer = currentCustomer;
     }
 }

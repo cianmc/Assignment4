@@ -28,7 +28,12 @@
         <activity
             android:name=".activity.ViewBook"
             android:windowSoftInputMode="stateHidden|adjustNothing" />
-        <activity android:name=".activity.ViewCart"></activity>
+        <activity android:name=".activity.ViewCart" />
+        <activity
+            android:name=".activity.PaymentDetails"
+            android:windowSoftInputMode="stateHidden|adjustNothing" />
+        <activity android:name=".activity.PurchaseHistory" />
+        <activity android:name=".activity.ViewPurchaseHistory"></activity>
     </application>
 
 </manifest>

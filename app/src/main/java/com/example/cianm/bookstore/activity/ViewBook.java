@@ -22,6 +22,8 @@ import com.example.cianm.bookstore.entity.Cart;
 import com.example.cianm.bookstore.entity.Comment;
 import com.example.cianm.bookstore.entity.GlobalVariables;
 import com.example.cianm.bookstore.entity.User;
+import com.example.cianm.bookstore.stockFacade.OrderFulfillmentController;
+import com.example.cianm.bookstore.stockFacade.OrderServiceFacadeImp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -44,13 +46,14 @@ public class ViewBook extends AppCompatActivity {
 
     TextView mTitle, mAuthor, mCategory, mPrice, mStock, stockTV, noComments, mQuantity;
     EditText eTitle, eAuthor, ePrice, eStock, mComment;
-    Button bEdit, bSave, bAddToCart, bPostReview, bMinusQuantity, bPlusQuantity;
+    Button bEdit, bSave, bAddToCart, bPostReview, bMinusQuantity, bPlusQuantity, bDelete;
     RatingBar rating, displayRating;
     Spinner spinner;
     ListView mCommentLV;
     ImageView mImageView;
     String bookID, userName, title, image;
     Integer quan;
+    Book book;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +88,7 @@ public class ViewBook extends AppCompatActivity {
         bPostReview = (Button) findViewById(R.id.postReviewBtn);
         bMinusQuantity = (Button) findViewById(R.id.quantityMinusBtn);
         bPlusQuantity = (Button) findViewById(R.id.quantityPlusBtn);
+        bDelete = (Button) findViewById(R.id.deleteBookBtn);
 
         //ProgressBar & Spinner & ListView & ImageView
         mImageView = (ImageView) findViewById(R.id.imageViewBook);
@@ -191,6 +195,15 @@ public class ViewBook extends AppCompatActivity {
             }
         });
 
+        bDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "Deleting book: " + title, Toast.LENGTH_LONG).show();
+                mBookRef.child(bookID).removeValue();
+                startActivity(new Intent(ViewBook.this, AdminHome.class));
+            }
+        });
+
     }
 
     public void leaveCommentRating(){
@@ -243,6 +256,8 @@ public class ViewBook extends AppCompatActivity {
     }
 
     public void addToCart(){
+        OrderFulfillmentController controller = new OrderFulfillmentController();
+        controller.facade=new OrderServiceFacadeImp();
         mCartRef = FirebaseDatabase.getInstance().getReference("Cart");
 
         String cartID = mCartRef.push().getKey();
@@ -251,15 +266,31 @@ public class ViewBook extends AppCompatActivity {
         String category = mCategory.getText().toString();
         Double price = Double.parseDouble(mPrice.getText().toString());
         int quantity = Integer.parseInt(mQuantity.getText().toString());
+        int stock = Integer.parseInt(mStock.getText().toString());
         Double total = price*quantity;
-
-        Cart cart = new Cart(userName, bookID, title, author, category, cartID, quantity, price, total, image);
-        mCartRef.child(fbUser.getUid()).child(cartID).setValue(cart);
-        Toast.makeText(getApplicationContext(), "Added " + cart.getTitle() + " to cart", Toast.LENGTH_LONG).show();
-        if (userName.equalsIgnoreCase("Admin")) {
-            startActivity(new Intent(ViewBook.this, AdminHome.class));
+        controller.orderProduct(book);
+        boolean result = controller.orderFulfilled;
+        if(!result){
+            Toast.makeText(getApplicationContext(), "Book: " + title + "is out of stock" , Toast.LENGTH_LONG).show();
         } else {
-            startActivity(new Intent(ViewBook.this, CustomerHome.class));
+            Cart cart = new Cart.CartBuilder(title, quantity, userName, image)
+                    .setAuthor(author)
+                    .setCategory(category)
+                    .setStock(stock)
+                    .setTotal(total)
+                    .setBookID(bookID)
+                    .buildCart();
+            mCartRef.child(fbUser.getUid()).child(cartID).setValue(cart);
+            Toast.makeText(getApplicationContext(), "Added " + cart.getTitle() + " to cart", Toast.LENGTH_LONG).show();
+            if (userName.equalsIgnoreCase("Admin")) {
+                Intent intent = new Intent(ViewBook.this, AdminHome.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(ViewBook.this, CustomerHome.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
         }
     }
 
@@ -295,7 +326,7 @@ public class ViewBook extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()){
-                    Book book = ds.getValue(Book.class);
+                    book = ds.getValue(Book.class);
 
                     mTitle.setText(book.getTitle());
                     mAuthor.setText(book.getAuthor());
@@ -334,6 +365,7 @@ public class ViewBook extends AppCompatActivity {
         mComment.setVisibility(View.INVISIBLE);
         bEdit.setVisibility(View.INVISIBLE);
         bSave.setVisibility(View.VISIBLE);
+        bDelete.setVisibility(View.VISIBLE);
         bMinusQuantity.setVisibility(View.INVISIBLE);
         bPlusQuantity.setVisibility(View.INVISIBLE);
 
@@ -376,6 +408,7 @@ public class ViewBook extends AppCompatActivity {
         bAddToCart.setVisibility(View.VISIBLE);
         mComment.setVisibility(View.VISIBLE);
         bSave.setVisibility(View.INVISIBLE);
+        bDelete.setVisibility(View.INVISIBLE);
         bEdit.setVisibility(View.VISIBLE);
     }
 
